@@ -1,0 +1,12 @@
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <p class="navbar-brand">Welcome to Kegosaurus!</p>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <p><br />This is NOT a picture of a dinosaur I made while drunk.</p>
+  <img src="<%= static_path(@conn, "/images/initech.png") %>" alt="The best fargin' dinosaur you wish you saw." />
+</div>

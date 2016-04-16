@@ -1,0 +1,29 @@
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <p class="navbar-brand">Backroom Jeopardy</p>
+    </div>
+  </div>
+</div>
+
+<div id="messages" class="container">
+</div>
+<div id="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-2">
+        <div class="input-group">
+          <span class="input-group-addon">@</span>
+          <input id="username" type="text" class="form-control" placeholder="username">
+        </div>
+      </div>
+      <div class="input-group">
+        <div id="btnDiv" class="input-group-btn">
+          <button id="oneBtnToRuleThemAll" class="btn btn-secondary">Register</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="<%= static_path(@conn, "/js/app.js") %>"></script>

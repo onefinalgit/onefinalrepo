@@ -1,0 +1,36 @@
+<div id="apartments" class="container">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Cost Per Night</th>
+        <th>Fees</th>
+        <th>Bedrooms</th>
+        <th>Bathrooms</th>
+      </tr>
+    </thead>
+    <%= for apt <- @apartments do %>
+    <tr>
+      <td><a href="<%= apt.url %>"><%= apt.title %></a></td>
+      <td>$<%= apt.cost_per_night %></td>
+      <td><%= apt.fees %></td>
+      <td><%= apt.br %></td>
+      <td><%= apt.bath %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+<div id="screenscrapeResults">
+</div>
+
+<div id="footer">
+  <div class="input-group" style="padding-left: 50px;">
+    <div id="btnDiv" class="input-group-btn" style="width: 500px;">
+      <input id="aptUrl" type="text" class="form-control" placeholder="URL" />
+      <button id="addAptBtn" class="btn btn-secondary">Add</button>
+    </div>
+  </div>
+</div>
+
+<script src="<%= static_path(@conn, "/js/apartments.js") %>"></script>

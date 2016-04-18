@@ -62,8 +62,8 @@ defmodule Chat.RoomChannel do
   end
 
   def handle_in( "new:contestant", contestant, socket ) do
-    broadcast! socket, "new:contestant", %{current: contestant["current"], next: contestant["next"]}
-    {:no_reply, socket}
+    broadcast! socket, "new:contestant", %{current: contestant["current"]}
+    {:noreply, socket}
   end
 
 

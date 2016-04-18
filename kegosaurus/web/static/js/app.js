@@ -99,7 +99,7 @@ class App {
         else
         {
           chan.push("new:msg", {user: $username.val(), body: " buzzed in!"})
-          $theAmazingButton.prop( "disabled", true )
+          // $theAmazingButton.prop( "disabled", true )
         }
       }
 
@@ -108,24 +108,7 @@ class App {
     //TODO: clicking a div with alex will cause them to gray out.  Next box will have colors
     $(document).on("click", ".currentContestant", ( event ) =>
     {
-      console.log( 'clicked on p')
-      // if( $username.val() == suckItTrebek )
-      // {
-        console.log( `target... ${event.target}`)
-        // console.log( `$(this).attr`('style')` )
-        var currentContestant = $(event.target)
-        // currentContestant.removeClass('currentContestant')
-
-        //TODO: PUSH NEW CHANNEL SO THIS UPDATES FOR EVERYBODY
-        // chan.push( "new:contestant", { current: currentContestant, next: currentContestant.next( '.buzzInBox') } )
-        chan.push( "new:contestant", { current: event.target, next: event.delegatedTarget})
-
-        // console.log( `current contestant box: ${currentContestant}`)
-
-        // TODO: only light up the top answer.  If wrong light up the next person.
-        // var nextGuy = currentContestant.next( ".buzzInBox")
-        // console.log( `next contestant: ${nextGuy.val()}` )
-        // currentContestant.next( ".buzzInBox" ).addClass( 'currentContestant' )
+        chan.push( "new:contestant", {current: event.target} )
     })
 
     chan.on("new:msg", msg => {
@@ -148,11 +131,21 @@ class App {
 
     chan.on("new:contestant", contestant => {
 
-      console.log( $(contestant.current) )
-      // console.log( contestant.next )
-      $(contestant.current).removeClass('currentContestant')
-      // currentContestant.removeClass('currentContestant')
+      var nextContestant = false
+      $( '.buzzInBox' ).each( (idx, elem) => {
 
+        if( nextContestant )
+        {
+          $(elem).addClass( 'currentContestant' )
+          nextContestant = false
+        }
+       else if( $(elem).hasClass( 'currentContestant' ))
+       {
+         nextContestant = true
+         $(elem).removeClass(' currentContestant' )
+         console.log( `this one had the class ${elem}`)
+       }
+      })
     })
   }
 
@@ -162,11 +155,8 @@ class App {
     let username = this.sanitize(msg.user || "anonymous")
     let body     = this.sanitize(msg.body)
 
-    // let color = this.randomColor()
-    // if( messageDiv.is( ':empty' ) )
     if( messageDiv.find( 'p' ).length == 0 )
     {
-      // return( `<br /><p class="buzzInBox currentContestant" style=${randomBgColorStyler}>${username}</p>`)
       return( `<br /><p class="buzzInBox currentContestant">${username}</p>`)
     }
     return( `<br /><p class="buzzInBox">${username}</p>`)
@@ -177,10 +167,6 @@ class App {
     var letters = ['FF0000','00FF00','0000FF','FFFF00','00FFFF','FF00FF','C0C0C0'];
     return '"background: #' + letters[Math.floor(Math.random() * letters.length)] + ';"'
   }
-
-  // TODO: this is the apt. section.  figure out how to break these into their own sections
-
-
 }
 
 $( () => App.init() )

@@ -99,7 +99,7 @@ class App {
         else
         {
           chan.push("new:msg", {user: $username.val(), body: " buzzed in!"})
-          // $theAmazingButton.prop( "disabled", true )
+          $theAmazingButton.prop( "disabled", true )
         }
       }
 
@@ -108,7 +108,10 @@ class App {
     //TODO: clicking a div with alex will cause them to gray out.  Next box will have colors
     $(document).on("click", ".currentContestant", ( event ) =>
     {
+      if( $username.val() == suckItTrebek )
+      {
         chan.push( "new:contestant", {current: event.target} )
+      }
     })
 
     chan.on("new:msg", msg => {

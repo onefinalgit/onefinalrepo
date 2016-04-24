@@ -2559,14 +2559,16 @@ var App = function () {
             chan.push("board:clear");
           } else {
             chan.push("new:msg", { user: $username.val(), body: " buzzed in!" });
-            // $theAmazingButton.prop( "disabled", true )
+            $theAmazingButton.prop("disabled", true);
           }
         }
       });
 
       //TODO: clicking a div with alex will cause them to gray out.  Next box will have colors
       $(document).on("click", ".currentContestant", function (event) {
-        chan.push("new:contestant", { current: event.target });
+        if ($username.val() == suckItTrebek) {
+          chan.push("new:contestant", { current: event.target });
+        }
       });
 
       chan.on("new:msg", function (msg) {

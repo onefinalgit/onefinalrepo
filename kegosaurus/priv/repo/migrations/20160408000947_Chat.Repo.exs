@@ -3,12 +3,10 @@ defmodule Chat.Repo.Migrations.Chat.Repo do
 
   def up do
     create table( :apartments, primary_key: true ) do
-      add :url,             :string, size: 255
-      add :title,           :string, size: 255
-      add :cost_per_night,  :int
-      add :fees,            :int
-      add :br,              :int
-      add :bath,            :int
+      add :url,     :string, size: 255
+      add :title,   :string, size: 255
+      add :cost,    :int
+      add :comment, :string, size: 4000
     end
   end
 

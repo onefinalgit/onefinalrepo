@@ -20,6 +20,7 @@
       <div class="input-group">
         <div id="btnDiv" class="input-group-btn">
           <button id="oneBtnToRuleThemAll" class="btn btn-secondary">Register</button>
+          <!-- <input type="submit" id="oneBtnToRuleThemAll" class="btn btn-secondary" value="Register" /> -->
         </div>
       </div>
     </div>

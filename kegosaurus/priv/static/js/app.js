@@ -2391,6 +2391,11 @@ var Apartments = function () {
   }
 
   _createClass(Apartments, null, [{
+    key: "testApartments",
+    value: function testApartments() {
+      alert("test apt button");
+    }
+  }, {
     key: "init",
     value: function init() {
       var $aptAddBtn = $("#addAptBtn");
@@ -2507,33 +2512,6 @@ var App = function () {
       });
       chan.onClose(function (e) {
         return console.log("channel closed", e);
-      });
-
-      //TODO: apt stuff, try to move to a new module
-      $aptUrl.on("blur", function () {
-        console.log("on blur caught");
-        $.ajax({
-          url: $aptUrl.val(),
-          type: 'GET',
-          xhrFields: {
-            withCredentials: false
-          },
-          headers: {
-            'Access-Control-Allow-Origin': true
-          },
-          contentType: 'text/plain',
-          success: function success(data) {
-            var title = $("<title>").html(data)[0];
-            $screenScrapeDiv.append("<p>Title: " + title + "</p>");
-            console.log('title!');
-            console.log("title: {title}");
-          },
-          fail: function fail(data) {
-            console.log("failed with: " + data);
-          }
-        });
-
-        $screenScrapeDiv.append("<p class=\"p\">mah results</p>");
       });
 
       //TODO: working on stuff here...

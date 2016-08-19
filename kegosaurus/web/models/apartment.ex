@@ -4,9 +4,7 @@ defmodule Chat.Apartment do
   schema "apartments" do
     field :url,             :string
     field :title,           :string
-    field :cost_per_night,  :integer
-    field :fees,            :integer
-    field :br,              :integer
-    field :bath,            :integer
+    field :cost,            :integer
+    field :comment,         :string
   end
 end

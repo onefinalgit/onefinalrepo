@@ -4,18 +4,16 @@
       <tr>
         <th>Title</th>
         <th>Cost Per Night</th>
-        <th>Fees</th>
-        <th>Bedrooms</th>
-        <th>Bathrooms</th>
+        <th>Comment</th>
       </tr>
     </thead>
     <%= for apt <- @apartments do %>
     <tr>
       <td><a href="<%= apt.url %>"><%= apt.title %></a></td>
-      <td>$<%= apt.cost_per_night %></td>
+      <td>$<%= apt.cost %></td>
       <td><%= apt.fees %></td>
-      <td><%= apt.br %></td>
-      <td><%= apt.bath %></td>
+      <td><input type="text" value="<%= apt.comment %>"></td>
+      <td><button class="btn">Save</button>
     </tr>
     <% end %>
   </table>
@@ -25,12 +23,20 @@
 </div>
 
 <div id="footer">
-  <div class="input-group" style="padding-left: 50px;">
-    <div id="btnDiv" class="input-group-btn" style="width: 500px;">
-      <input id="aptUrl" type="text" class="form-control" placeholder="URL" />
-      <button id="addAptBtn" class="btn btn-secondary">Add</button>
-    </div>
+  <div class="container" style="padding-left: 50px;">
+    <form action="<%= page_path(@conn, :create) %>" method="post">
+      <div id="btnDiv" class="row" style="width: 500px;">
+        <input type="hidden" name="_csrf_token" value="<%= get_csrf_token %>">
+        <label for="apartment[url]">url</label>
+        <input name="apartment[url]" type="text" class="col-md-3" placeholder="URL" />
+        <label for="apartment[title]">title</label>
+        <input name="apartment[title]" type="text" class="col-md-3" placeholder="Title" />
+        <label for="apartment[cost]">cost</label>
+        <input id="apartment[cost]" type="text" class="col-md-3" placeholder="Cost" />
+        <button id="addAptBtn" class="btn btn-secondary">Add</button>
+      </div>
+    </form>
   </div>
 </div>
 
-<script src="<%= static_path(@conn, "/js/apartments.js") %>"></script>
+<script src="<%= static_path(@conn, "/js/app.js") %>"></script>

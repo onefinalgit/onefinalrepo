@@ -2385,18 +2385,17 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-// export var Apartments = {
-//   greet: function(){
-//     cosole.log("hello")
-//   }
-// }
-
 var Apartments = function () {
   function Apartments() {
     _classCallCheck(this, Apartments);
   }
 
   _createClass(Apartments, null, [{
+    key: "testApartments",
+    value: function testApartments() {
+      alert("test apt button");
+    }
+  }, {
     key: "init",
     value: function init() {
       var $aptAddBtn = $("#addAptBtn");
@@ -2407,7 +2406,14 @@ var Apartments = function () {
         console.log("on blur caught");
         $.ajax({
           url: $aptUrl.val(),
-          dataType: 'text',
+          type: 'GET',
+          xhrFields: {
+            withCredentials: false
+          },
+          // headers: {
+          //   Access-Control-Allow-Credentials: true
+          // },
+          contentType: 'text/plain',
           success: function success(data) {
             var title = $("<title>").html(data)[0];
             $screenScrapeDiv.append("<p>Title: " + title + "</p>");
@@ -2421,7 +2427,7 @@ var Apartments = function () {
           }
         });
 
-        $screenScrapeDiv.append("<p class=\"p\">my results</p>");
+        $screenScrapeDiv.append("<p class=\"p\">mah results</p>");
       });
     }
   }]);
@@ -2446,6 +2452,8 @@ Object.defineProperty(exports, "__esModule", {
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _phoenix = require("phoenix");
+
+var _apartments = require("priv/static/apartments");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2509,26 +2517,33 @@ var App = function () {
       });
 
       //TODO: apt stuff, try to move to a new module
-      $aptUrl.on("blur", function () {
-        console.log("on blur caught");
-        $.ajax({
-          url: $aptUrl.val(),
-          dataType: 'text',
-          success: function success(data) {
-            var title = $("<title>").html(data)[0];
-            $screenScrapeDiv.append("<p>Title: " + title + "</p>");
-            console.log('title!');
-            console.log("title: {title}");
-          },
-          fail: function fail(data) {
-            // var title = $("<title>").html(data)[0];
-            // $screenScrapeDiv.append( "<p>Title done: " + title + "</p>" )
-            console.log("failed with: " + data);
-          }
-        });
-
-        $screenScrapeDiv.append("<p class=\"p\">my results</p>");
-      });
+      $aptUrl.on("blur", _apartments.Apartments.testApartments());
+      // $aptUrl.on("blur", () =>
+      // {
+      //   console.log("on blur caught")
+      //   $.ajax({
+      //     url: $aptUrl.val(),
+      //     type: 'GET',
+      //     xhrFields: {
+      //       withCredentials: false
+      //     },
+      //     headers: {
+      //       'Access-Control-Allow-Origin': true
+      //     },
+      //     contentType: 'text/plain',
+      //     success: function( data ){
+      //       var title = $("<title>").html(data)[0];
+      //       $screenScrapeDiv.append( "<p>Title: " + title + "</p>" )
+      //       console.log( 'title!')
+      //       console.log( "title: {title}")
+      //     },
+      //     fail: function( data ){
+      //       console.log( "failed with: " + data )
+      //     }
+      //   })
+      //
+      //   $screenScrapeDiv.append( `<p class="p">mah results</p>` )
+      // })
 
       //TODO: working on stuff here...
       $theAmazingButton.on("click", function () {
@@ -2558,8 +2573,15 @@ var App = function () {
         }
       });
 
+      //TODO: clicking a div with alex will cause them to gray out.  Next box will have colors
+      $(document).on("click", ".currentContestant", function (event) {
+        if ($username.val() == suckItTrebek) {
+          chan.push("new:contestant", { current: event.target });
+        }
+      });
+
       chan.on("new:msg", function (msg) {
-        $messages.append(_this.messageTemplate(msg));
+        $messages.append(_this.messageTemplate(msg, $messages));
         scrollTo(0, document.body.scrollHeight);
       });
 
@@ -2575,6 +2597,22 @@ var App = function () {
         $messages.empty();
         $theAmazingButton.prop("disabled", false);
       });
+
+      chan.on("new:contestant", function (contestant) {
+
+        var nextContestant = false;
+        $('.buzzInBox').each(function (idx, elem) {
+
+          if (nextContestant) {
+            $(elem).addClass('currentContestant');
+            nextContestant = false;
+          } else if ($(elem).hasClass('currentContestant')) {
+            nextContestant = true;
+            $(elem).removeClass(' currentContestant');
+            console.log("this one had the class " + elem);
+          }
+        });
+      });
     }
   }, {
     key: "sanitize",
@@ -2583,22 +2621,21 @@ var App = function () {
     }
   }, {
     key: "messageTemplate",
-    value: function messageTemplate(msg) {
+    value: function messageTemplate(msg, messageDiv) {
       var username = this.sanitize(msg.user || "anonymous");
       var body = this.sanitize(msg.body);
 
-      var color = this.randomColor();
-      return "<br /><p class=\"buzzInBox\" style=\"background: " + color + ";\">" + username + "</p>";
+      if (messageDiv.find('p').length == 0) {
+        return "<br /><p class=\"buzzInBox currentContestant\">" + username + "</p>";
+      }
+      return "<br /><p class=\"buzzInBox\">" + username + "</p>";
     }
   }, {
-    key: "randomColor",
-    value: function randomColor() {
+    key: "randomBgColorStyler",
+    value: function randomBgColorStyler() {
       var letters = ['FF0000', '00FF00', '0000FF', 'FFFF00', '00FFFF', 'FF00FF', 'C0C0C0'];
-      return '#' + letters[Math.floor(Math.random() * letters.length)];
+      return '"background: #' + letters[Math.floor(Math.random() * letters.length)] + ';"';
     }
-
-    // TODO: this is the apt. section.  figure out how to break these into their own sections
-
   }]);
 
   return App;
@@ -2755,5 +2792,5 @@ $(function () {
 exports.default = Brjeopardy;
 });
 
-;require('web/static/js/app');
+;
 //# sourceMappingURL=apartments.js.map

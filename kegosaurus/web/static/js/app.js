@@ -36,34 +36,6 @@ class App {
     chan.onError(e => console.log("something went wrong", e))
     chan.onClose(e => console.log("channel closed", e))
 
-    //TODO: apt stuff, try to move to a new module
-    $aptUrl.on("blur", () =>
-    {
-      console.log("on blur caught")
-      $.ajax({
-        url: $aptUrl.val(),
-        type: 'GET',
-        xhrFields: {
-          withCredentials: false
-        },
-        headers: {
-          'Access-Control-Allow-Origin': true
-        },
-        contentType: 'text/plain',
-        success: function( data ){
-          var title = $("<title>").html(data)[0];
-          $screenScrapeDiv.append( "<p>Title: " + title + "</p>" )
-          console.log( 'title!')
-          console.log( "title: {title}")
-        },
-        fail: function( data ){
-          console.log( "failed with: " + data )
-        }
-      })
-
-      $screenScrapeDiv.append( `<p class="p">mah results</p>` )
-    })
-
     //TODO: working on stuff here...
     $theAmazingButton.on("click", () =>
     {

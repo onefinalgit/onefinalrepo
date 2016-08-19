@@ -1,5 +1,12 @@
 class Apartments
 {
+
+  static testApartments()
+  {
+      alert("test apt button");
+  }
+
+
   static init()
   {
     var $aptAddBtn          = $("#addAptBtn")
